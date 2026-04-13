@@ -38,12 +38,12 @@ public interface IProductsRepository
     ///Updates the specified product with new values and returns the updated product.
     /// </summary>
     /// <param name="product">The product to update. Must contain the updated values and a valid identifier.</param>
-    /// <returns>The task result contains the updated product.</returns>
-    Task<Product> UpdateProduct(Product product);
+    /// <returns>The task result contains the updated product, or null if the product does not exist.</returns>
+    Task<Product?> UpdateProduct(Product product);
     /// <summary>
     /// Deletes the product with the specified identifier.
     /// </summary>
     /// <param name="productId">The unique identifier of the product to delete.</param>
-    /// <returns> The task result contains the deleted product if found; otherwise, null.</returns>
-    Task<Product> DeleteProduct(Guid productId);
+    /// <returns> The task result contains true if the product was deleted; otherwise, false.</returns>
+    Task<bool> DeleteProduct(Guid productId);
 }

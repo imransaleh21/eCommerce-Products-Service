@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ProductsMicroService.DataAccessLayer.DBContext;
+using ProductsMicroService.DataAccessLayer.Repository;
+using ProductsMicroService.DataAccessLayer.RepositoryContracts;
 
 namespace ProductsMicroService.DataAccessLayer;
 
@@ -20,6 +22,7 @@ public static class DependencyInjection
                     configuration.GetConnectionString("MySqlConnection"),
                     ServerVersion.AutoDetect(configuration.GetConnectionString("MySqlConnection"))
                 ));
+        services.AddScoped<IProductsRepository, ProductsRepository>();
         return services;
     }
 
