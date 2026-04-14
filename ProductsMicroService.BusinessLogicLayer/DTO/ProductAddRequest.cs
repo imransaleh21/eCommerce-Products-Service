@@ -1,0 +1,9 @@
+﻿using ProductsMicroService.BusinessLogicLayer.Enum;
+
+namespace ProductsMicroService.BusinessLogicLayer.DTO;
+public record ProductAddRequest(
+    string ProductName,
+    ProductsCategoryOption ProductCategory,
+    double UnitPrice,
+    int QuantityInStock
+    );
