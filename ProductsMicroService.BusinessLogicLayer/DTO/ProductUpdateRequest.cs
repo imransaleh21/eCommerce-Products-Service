@@ -5,6 +5,6 @@ public record ProductUpdateRequest(
     Guid ProductID,
     string ProductName,
     ProductsCategoryOption ProductCategory,
-    double UnitPrice,
-    int QuantityInStock
+    double? UnitPrice,
+    int? QuantityInStock
     );
