@@ -36,12 +36,12 @@ public class ProductsRepository : IProductsRepository
         return product;
     }
 
-    public async Task<IEnumerable<Product>> GetProducts()
+    public async Task<IEnumerable<Product?>> GetProducts()
     {
         return await _dbContext.Products.ToListAsync();
     }
 
-    public async Task<IEnumerable<Product>?> GetProductsByCondition(Expression<Func<Product, bool>> conditionExpression)
+    public async Task<IEnumerable<Product?>> GetProductsByCondition(Expression<Func<Product, bool>> conditionExpression)
     {
         return await _dbContext.Products.Where(conditionExpression).ToListAsync();
     }

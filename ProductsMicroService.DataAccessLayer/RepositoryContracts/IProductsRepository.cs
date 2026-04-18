@@ -14,14 +14,14 @@ public interface IProductsRepository
     /// Asynchronously retrieves a collection of available products.
     /// </summary>
     /// <returns>The task result contains an enumerable collection of product</returns>
-    Task<IEnumerable<Product>> GetProducts();
+    Task<IEnumerable<Product?>> GetProducts();
     /// <summary>
     /// Asynchronously retrieves a collection of products that satisfy the specified condition.
     /// </summary>
     /// <param name="conditionExpression">An expression that defines the condition used to filter products.</param>
     /// <returns>The task result contains an enumerable collection of products
     /// that match the specified condition, or null if no products are found.</returns>
-    Task<IEnumerable<Product>?> GetProductsByCondition(Expression<Func<Product, bool>> conditionExpression);
+    Task<IEnumerable<Product?>> GetProductsByCondition(Expression<Func<Product, bool>> conditionExpression);
     /// <summary>
     /// Asynchronously retrieves the first product that matches the specified condition.
     /// </summary>
