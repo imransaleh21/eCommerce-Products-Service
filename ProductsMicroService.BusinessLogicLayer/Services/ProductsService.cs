@@ -2,8 +2,7 @@
 using FluentValidation;
 using FluentValidation.Results;
 using ProductsMicroService.BusinessLogicLayer.DTO;
-using ProductsMicroService.BusinessLogicLayer.Mappers;
-using ProductsMicroService.BusinessLogicLayer.ServicesRepository;
+using ProductsMicroService.BusinessLogicLayer.ServicesContracts;
 using ProductsMicroService.DataAccessLayer.Entity;
 using ProductsMicroService.DataAccessLayer.RepositoryContracts;
 using System.Linq.Expressions;

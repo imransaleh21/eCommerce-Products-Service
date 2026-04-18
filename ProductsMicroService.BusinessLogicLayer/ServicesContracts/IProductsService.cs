@@ -2,7 +2,7 @@
 using ProductsMicroService.DataAccessLayer.Entity;
 using System.Linq.Expressions;
 
-namespace ProductsMicroService.BusinessLogicLayer.ServicesRepository;
+namespace ProductsMicroService.BusinessLogicLayer.ServicesContracts;
 public interface IProductsService
 {
     /// <summary>

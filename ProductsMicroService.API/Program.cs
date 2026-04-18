@@ -1,4 +1,3 @@
-using FluentValidation.AspNetCore;
 using ProductsMicroService.API.Middleware;
 using ProductsMicroService.BusinessLogicLayer;
 using ProductsMicroService.DataAccessLayer;
@@ -8,8 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDataAccessLayer(builder.Configuration);
 builder.Services.AddBusinessLogicLayer();
 builder.Services.AddControllers();
-//builder.Services.AddAutoMapper(); 
-builder.Services.AddFluentValidationAutoValidation();
+//builder.Services.AddAutoMapper();
 
 var app = builder.Build();
 app.UseExceptionHandlingMiddleware();
