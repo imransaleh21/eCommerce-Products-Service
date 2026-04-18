@@ -56,17 +56,15 @@ public class ProductsService : IProductsService
         return _mapper.Map<ProductResponse>(existingProduct);
     }
 
-    public async Task<List<ProductResponse?>?> GetProducts()
+    public async Task<List<ProductResponse?>> GetProducts()
     {
         IEnumerable<Product?> productEntities = await _productsRepository.GetProducts();
-        if (productEntities is null || !productEntities.Any()) return null;
         return _mapper.Map<IEnumerable<ProductResponse?>>(productEntities).ToList();
     }
 
-    public async Task<List<ProductResponse?>?> GetProductsByCondition(Expression<Func<Product, bool>> predicate)
+    public async Task<List<ProductResponse?>> GetProductsByCondition(Expression<Func<Product, bool>> predicate)
     {
         IEnumerable<Product?> existingProducts = await _productsRepository.GetProductsByCondition(predicate);
-        if (existingProducts is null || !existingProducts.Any()) return null;
         return _mapper.Map<IEnumerable<ProductResponse?>>(existingProducts).ToList();
     }
 
