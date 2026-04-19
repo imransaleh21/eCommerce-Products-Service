@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
 using ProductsMicroService.BusinessLogicLayer.DTO;
-using ProductsMicroService.BusinessLogicLayer.ServicesRepository;
+using ProductsMicroService.BusinessLogicLayer.ServicesContracts;
 
 namespace ProductsMicroService.API.ApiEndpoints;
 

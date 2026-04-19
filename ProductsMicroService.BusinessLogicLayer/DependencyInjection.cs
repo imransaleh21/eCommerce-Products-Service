@@ -1,7 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 using ProductsMicroService.BusinessLogicLayer.Mappers;
 using ProductsMicroService.BusinessLogicLayer.Services;
 using ProductsMicroService.BusinessLogicLayer.ServicesContracts;
+using ProductsMicroService.BusinessLogicLayer.Validators;
 
 namespace ProductsMicroService.BusinessLogicLayer;
 public static class DependencyInjection
@@ -18,6 +20,8 @@ public static class DependencyInjection
         services.AddAutoMapper(cfg => { }, typeof(ProductAddRequestToProductMappingProfile).Assembly);
         // Register the products service with a scoped lifetime, meaning a new instance will be created for each HTTP request.
         services.AddScoped<IProductsService, ProductsService>();
+        // Register all validators from the assembly containing the specified validator.
+        services.AddValidatorsFromAssemblyContaining<ProductAddRequestValidator>();
         return services;
     }
 

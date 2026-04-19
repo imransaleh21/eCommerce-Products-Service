@@ -4,5 +4,6 @@ public enum ProductsCategoryOption
     Electronics,
     HomeAppliances,
     Furniture,
-    Clothing
+    Clothing,
+    Accessories
 }

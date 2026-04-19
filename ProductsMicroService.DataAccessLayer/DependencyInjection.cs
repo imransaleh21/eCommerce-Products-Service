@@ -20,7 +20,8 @@ public static class DependencyInjection
         services.AddDbContext<ApplicationDbContext>(options =>
         options.UseMySql(
                     configuration.GetConnectionString("MySqlConnection"),
-                    ServerVersion.AutoDetect(configuration.GetConnectionString("MySqlConnection"))
+                    ServerVersion.AutoDetect(configuration.GetConnectionString("MySqlConnection")),
+                    mySqlOptions => mySqlOptions.EnableStringComparisonTranslations()
                 ));
         services.AddScoped<IProductsRepository, ProductsRepository>();
         return services;

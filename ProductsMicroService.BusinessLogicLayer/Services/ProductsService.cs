@@ -58,13 +58,15 @@ public class ProductsService : IProductsService
     public async Task<List<ProductResponse?>> GetProducts()
     {
         IEnumerable<Product?> productEntities = await _productsRepository.GetProducts();
-        return _mapper.Map<IEnumerable<ProductResponse?>>(productEntities).ToList();
+        return productEntities
+            .Select(product => product == null ? null : _mapper.Map<ProductResponse>(product)).ToList();
     }
 
     public async Task<List<ProductResponse?>> GetProductsByCondition(Expression<Func<Product, bool>> predicate)
     {
         IEnumerable<Product?> existingProducts = await _productsRepository.GetProductsByCondition(predicate);
-        return _mapper.Map<IEnumerable<ProductResponse?>>(existingProducts).ToList();
+        return existingProducts
+            .Select(product => product is null ? null : _mapper.Map<ProductResponse>(product)).ToList();
     }
 
     public async Task<ProductResponse?> UpdateProduct(ProductUpdateRequest productUpdateRequest)
