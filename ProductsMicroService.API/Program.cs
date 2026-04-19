@@ -8,7 +8,19 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDataAccessLayer(builder.Configuration);
 builder.Services.AddBusinessLogicLayer();
 builder.Services.AddControllers();
-//builder.Services.AddAutoMapper();
+// Endpoints API explorer is required for Swagger to discover the API endpoints and generate documentation.
+// It provides metadata about the API routes, parameters, and responses, enabling Swagger to create an interactive API documentation interface.
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.WithOrigins("http://localhost:4200")
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
 
 // Configure JSON serialization to use string representation for enums
 builder.Services.ConfigureHttpJsonOptions(options =>
@@ -22,6 +34,9 @@ app.UseHsts();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+app.UseSwagger();
+app.UseSwaggerUI();
+app.UseCors();
 
 app.UseAuthentication();
 app.UseAuthorization();
