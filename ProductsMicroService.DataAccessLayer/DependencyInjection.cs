@@ -17,10 +17,14 @@ public static class DependencyInjection
     /// <returns>The same service collection instance, to allow for method chaining.</returns>
     public static IServiceCollection AddDataAccessLayer(this IServiceCollection services, IConfiguration configuration)
     {
+        string formatConnectionString = configuration.GetConnectionString("MySqlConnection")!;
+        string connectionStr = formatConnectionString.Replace("$MYSQL_HOST", Environment.GetEnvironmentVariable("MYSQL_HOST"))
+        .Replace("$MYSQL_PASS", Environment.GetEnvironmentVariable("MYSQL_PASS"));
+
         services.AddDbContext<ApplicationDbContext>(options =>
         options.UseMySql(
-                    configuration.GetConnectionString("MySqlConnection"),
-                    ServerVersion.AutoDetect(configuration.GetConnectionString("MySqlConnection")),
+                    connectionStr,
+                    ServerVersion.AutoDetect(connectionStr),
                     mySqlOptions => mySqlOptions.EnableStringComparisonTranslations()
                 ));
         services.AddScoped<IProductsRepository, ProductsRepository>();
