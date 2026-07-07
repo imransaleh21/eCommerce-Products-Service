@@ -4,7 +4,10 @@
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "MYSQL_HOST": "localhost",
+        "MYSQL_PORT": "3306",
+        "MYSQL_PASS": "mysql"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "http://localhost:1114"
@@ -13,10 +16,13 @@
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "MYSQL_HOST": "localhost",
+        "MYSQL_PORT": "3306",
+        "MYSQL_PASS": "mysql"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "https://localhost:1114;http://localhost:5001",
+      "applicationUrl": "https://localhost:2226;http://localhost:5001",
       "launchUrl": "swagger"
     },
     "Container (Dockerfile)": {
