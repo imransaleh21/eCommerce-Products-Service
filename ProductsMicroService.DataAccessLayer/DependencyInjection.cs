@@ -19,7 +19,9 @@ public static class DependencyInjection
     {
         string formatConnectionString = configuration.GetConnectionString("MySqlConnection")!;
         string connectionStr = formatConnectionString.Replace("$MYSQL_HOST", Environment.GetEnvironmentVariable("MYSQL_HOST"))
-        .Replace("$MYSQL_PASS", Environment.GetEnvironmentVariable("MYSQL_PASS"));
+        .Replace("$MYSQL_PORT", Environment.GetEnvironmentVariable("MYSQL_PORT"))
+        .Replace("$MYSQL_PASS", Environment.GetEnvironmentVariable("MYSQL_PASS"))
+        .Replace("$MYSQL_DATABASE", Environment.GetEnvironmentVariable("MYSQL_DATABASE"));
 
         services.AddDbContext<ApplicationDbContext>(options =>
         options.UseMySql(
