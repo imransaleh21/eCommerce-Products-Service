@@ -18,8 +18,8 @@ public class RabbitMQPublisher : IRabbitMQPublisher, IDisposable
         {
             HostName = _configuration["RABBITMQ_HOST"]!,
             Port = int.Parse(_configuration["RABBITMQ_PORT"]!),
-            UserName = _configuration["RABBITMQ_DEFAULT_USER"]!,
-            Password = _configuration["RABBITMQ_DEFAULT_PASS"]!
+            UserName = _configuration["RABBITMQ_USER"]!,
+            Password = _configuration["RABBITMQ_PASS"]!
         };
 
         _connection = connectionFactory.CreateConnectionAsync().GetAwaiter().GetResult();
@@ -28,7 +28,23 @@ public class RabbitMQPublisher : IRabbitMQPublisher, IDisposable
 
     public async Task PublishMessageAsync<T>(string routingKey, T message)
     {
-        // TODO: Implement message publishing
+        if (message == null) throw new ArgumentNullException(nameof(message), "Message cannot be null.");
+        string jsonMsg = JsonSerializer.Serialize(message, message.GetType());
+        byte[] body = Encoding.UTF8.GetBytes(jsonMsg);
+        // Create exchange if it doesn't exist (but cxchange can be created at the project startup)
+        string exchangeName = "products-exchange";
+        await _channel.ExchangeDeclareAsync(
+            exchange: exchangeName, 
+            type: ExchangeType.Direct, 
+            durable: true, 
+            autoDelete: false
+        );
+        // Publish the message to the exchange with the specified routing key
+        await _channel.BasicPublishAsync(
+            exchange: exchangeName,
+            routingKey: routingKey,
+            body: body 
+        );
     }
 
     public void Dispose()

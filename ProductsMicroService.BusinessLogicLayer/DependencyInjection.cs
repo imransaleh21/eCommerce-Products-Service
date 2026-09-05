@@ -24,7 +24,7 @@ public static class DependencyInjection
         // Register all validators from the assembly containing the specified validator.
         services.AddValidatorsFromAssemblyContaining<ProductAddRequestValidator>();
         // Register RabbitMQ publisher
-        services.AddScoped<IRabbitMQPublisher, RabbitMQPublisher>();
+        services.AddTransient<IRabbitMQPublisher, RabbitMQPublisher>();
         return services;
     }
 }
