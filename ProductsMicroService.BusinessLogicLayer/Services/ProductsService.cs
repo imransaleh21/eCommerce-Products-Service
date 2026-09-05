@@ -2,6 +2,7 @@
 using FluentValidation;
 using FluentValidation.Results;
 using ProductsMicroService.BusinessLogicLayer.DTO;
+using ProductsMicroService.BusinessLogicLayer.RabbitMQ;
 using ProductsMicroService.BusinessLogicLayer.ServicesContracts;
 using ProductsMicroService.DataAccessLayer.Entity;
 using ProductsMicroService.DataAccessLayer.RepositoryContracts;
@@ -15,14 +16,17 @@ public class ProductsService : IProductsService
     private readonly IMapper _mapper;
     private readonly IValidator<ProductUpdateRequest> _productUpdateRequestValidator;
     private readonly IValidator<ProductAddRequest> _productAddRequestValidator;
+    private readonly IRabbitMQPublisher _rabbitMQPublisher;
     public ProductsService(IProductsRepository productsRepository, IMapper mapper,
         IValidator<ProductAddRequest> productAddRequestValidator,
-        IValidator<ProductUpdateRequest> productUpdateRequestValidator)
+        IValidator<ProductUpdateRequest> productUpdateRequestValidator,
+        IRabbitMQPublisher rabbitMQPublisher)
     {
         _productsRepository = productsRepository;
         _mapper = mapper;
         _productAddRequestValidator = productAddRequestValidator;
         _productUpdateRequestValidator = productUpdateRequestValidator;
+        _rabbitMQPublisher = rabbitMQPublisher;
     }
     public async Task<ProductResponse?> AddProduct(ProductAddRequest productAddRequest)
     {
@@ -82,8 +86,18 @@ public class ProductsService : IProductsService
         Product? existingProduct = await _productsRepository.GetProductByCondition(p => p.ProductID == productUpdateRequest.ProductID);
         if(existingProduct is null) throw new ArgumentException("Invalid Product to Update");
 
+        // Check if the product name is being updated (case-insensitive comparison)
+        bool isProductNameUpdated = !string.Equals(existingProduct.ProductName, productUpdateRequest.ProductName, StringComparison.OrdinalIgnoreCase);
+
         Product productEntity = _mapper.Map<Product>(productUpdateRequest);
         Product? updatedProduct = await _productsRepository.UpdateProduct(productEntity);
+        if(isProductNameUpdated)
+        {
+            string routeKey = "product.name.updated";
+            ProductNameUpdateMsg productNameUpdateMessage = new ProductNameUpdateMsg(updatedProduct.ProductID, updatedProduct.ProductName);
+            // Publish the updated product name to the message queue
+            await _rabbitMQPublisher.PublishMessageAsync(routeKey, productNameUpdateMessage);
+        }
         return _mapper.Map<ProductResponse>(updatedProduct);
     }
 }

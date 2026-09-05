@@ -32,7 +32,7 @@ public class RabbitMQPublisher : IRabbitMQPublisher, IDisposable
         string jsonMsg = JsonSerializer.Serialize(message, message.GetType());
         byte[] body = Encoding.UTF8.GetBytes(jsonMsg);
         // Create exchange if it doesn't exist (but cxchange can be created at the project startup)
-        string exchangeName = "products-exchange";
+        string exchangeName = _configuration["RABBITMQ_PRODUCTS_EXCHANGE"]!;
         await _channel.ExchangeDeclareAsync(
             exchange: exchangeName, 
             type: ExchangeType.Direct, 
