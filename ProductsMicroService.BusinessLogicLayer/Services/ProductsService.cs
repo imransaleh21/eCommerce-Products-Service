@@ -49,7 +49,14 @@ public class ProductsService : IProductsService
         if (productId == Guid.Empty) throw new ArgumentException("Invalid product ID.", nameof(productId));
         Product? existingProduct = await _productsRepository.GetProductByCondition(p => p.ProductID == productId);
         if (existingProduct is null) return false;
-        return await _productsRepository.DeleteProduct(productId);
+        ProductDeleteMessage productDeleteMessage = new ProductDeleteMessage(existingProduct.ProductID, existingProduct.ProductName);
+        bool isDeleted = await _productsRepository.DeleteProduct(productId);
+        if (isDeleted)
+        {
+            string routeKey = "product.deleted";
+            await _rabbitMQPublisher.PublishMessageAsync(routeKey, productDeleteMessage);
+        }
+        return isDeleted;
     }
 
     public async Task<ProductResponse?> GetProductByCondition(Expression<Func<Product, bool>> predicate)
@@ -94,7 +101,7 @@ public class ProductsService : IProductsService
         if(isProductNameUpdated)
         {
             string routeKey = "product.name.updated";
-            ProductNameUpdateMsg productNameUpdateMessage = new ProductNameUpdateMsg(updatedProduct.ProductID, updatedProduct.ProductName);
+            ProductNameUpdateMessage productNameUpdateMessage = new ProductNameUpdateMessage(updatedProduct.ProductID, updatedProduct.ProductName);
             // Publish the updated product name to the message queue
             await _rabbitMQPublisher.PublishMessageAsync(routeKey, productNameUpdateMessage);
         }
