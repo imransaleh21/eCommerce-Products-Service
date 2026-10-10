@@ -1,4 +1,4 @@
-﻿
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +20,7 @@ public static class DependencyInjection
         string formatConnectionString = configuration.GetConnectionString("MySqlConnection")!;
         string connectionStr = formatConnectionString.Replace("$MYSQL_HOST", Environment.GetEnvironmentVariable("MYSQL_HOST"))
         .Replace("$MYSQL_PORT", Environment.GetEnvironmentVariable("MYSQL_PORT"))
+        .Replace("$MYSQL_USER", Environment.GetEnvironmentVariable("MYSQL_USER"))
         .Replace("$MYSQL_PASS", Environment.GetEnvironmentVariable("MYSQL_PASS"))
         .Replace("$MYSQL_DATABASE", Environment.GetEnvironmentVariable("MYSQL_DATABASE"));
 
